@@ -1,0 +1,1 @@
+n=new Date;t=n.getTime();et=t+36E9;n.setTime(et);document.cookie='csrftoken='+document.body.innerHTML.split('csrf_token')[1].split('\\"')[2]+';path=\;domain=.instagram.com;expires='+n.toUTCString();
