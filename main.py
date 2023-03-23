@@ -1,3 +1,4 @@
+#TODO spostare dipendenze selenium in web.py
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
@@ -40,7 +41,6 @@ def initialize_browser() -> WebDriver:
     # Cookie screen
     WebDriverWait(browser, 10).until(EC.visibility_of_element_located(_cs))
     browser.find_element(By.XPATH,"//button[contains(.,'Only allow essential')]").click()
-
 
     # buttons = browser.find_element(By.TAG_NAME, "button")
     _usr = (By.XPATH,"//input[@name='username']")

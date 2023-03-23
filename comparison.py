@@ -57,9 +57,16 @@ for fl in mostRecentData["followers"]:
         gainedFollowers.append(fl)
 
 # get lost followers
+# check if lost followers are really lost follower or deactivated/removed accounts
+from web import get_browser,is_user_active
+browser = get_browser()
 lostFollowers = []
 for fl in leastRecentData["followers"]:
     if fl["username"] not in [i["username"] for i in mostRecentData["followers"]]:
+        if not is_user_active(browser,fl["username"]):
+            fl["status"] = "deactivated"
+        else: fl["status"] = "active"
+
         lostFollowers.append(fl)
 
 print("--------------------------------")
@@ -71,3 +78,10 @@ print(gainedFollowers)
 print("--------------------------------")
 print("lost followers")
 print(lostFollowers)
+
+# check if lost followers are really lost follower or deactivated/removed accounts
+# from web import get_browser,is_user_active
+# browser = get_browser()
+# for follower in lostFollowers:
+#     if not is_user_active(browser,follower["username"]):
+#         print(f"{follower['username']} is deactivated")

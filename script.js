@@ -30,6 +30,7 @@ var done = arguments[0];
     let after = null;
     let has_next = true;
 
+    // TODO reverse engineering of this :)
     while (has_next) {
       await fetch(
         `https://www.instagram.com/graphql/query/?query_hash=c76146de99bb02f6415203be841dd25a&variables=` +
@@ -116,5 +117,5 @@ var done = arguments[0];
     done(err)
   }
 })().then(()=>{
-  done(JSON.stringify({ followers, followings, dontFollowMeBack, iDontFollowBack }));
+  done(JSON.stringify({ "date":(new Date()).toISOString() , followers, followings, dontFollowMeBack, iDontFollowBack }));
 });
