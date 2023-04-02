@@ -15,7 +15,7 @@ iDontFollowBack = [];
 
 var done = arguments[0];
 
-(async (done,reject) => {
+(async () => {
   try {
     console.log(`Process started! Give it a couple of seconds`);
 
