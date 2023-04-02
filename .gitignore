@@ -2,3 +2,7 @@
 geckodriver.log
 api-approach
 results
+cookies
+.python-version
+.fuse*
+__pycache__

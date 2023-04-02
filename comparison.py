@@ -69,6 +69,10 @@ for fl in leastRecentData["followers"]:
 
         lostFollowers.append(fl)
 
+# TODO check if a lost follower has the same bio of a gained follower - it can only have changed account (especially if says deactivated)
+
+# TODO ask the possibility of unfollow lost followers that are still active
+
 print("--------------------------------")
 print(f"gained: {str(len(gainedFollowers))}")
 print(f"lost: {str(len(lostFollowers))}")
