@@ -24,7 +24,7 @@ def resolve_cookie_prompt(browser):
     browser.find_element(By.XPATH,"//button[contains(.,'Only allow essential')]").click()
 
 def execute_script(browser):
-    with open("script.js") as f:
+    with open("scripts/script.js") as f:
         _s = f.read()
         print("script loaded")
         # print(_s)
@@ -49,9 +49,6 @@ def initialize_browser() -> WebDriver:
         options.add_argument("--headless")
         
     browser = webdriver.Firefox(options=options)
-
-    if path.exists("cookies/cookies.pkl"):
-        load_cookies()
  
     return browser
  
@@ -61,7 +58,7 @@ def from_login(browser):
     # Cookie screen
     resolve_cookie_prompt(browser)
 
-    with open("csrf.js","r") as f:
+    with open("scripts/csrf.js","r") as f:
         _s = f.read()
         print(_s)
         browser.execute_script(_s)
@@ -96,10 +93,15 @@ def from_login(browser):
 
 def from_home(browser):
     browser.get("https://www.instagram.com")
+    if path.exists("cookies/cookies.pkl"):
+        for c in load_cookies():
+            browser.add_cookie(c)
+        browser.get("https://www.instagram.com")
+    
+    # if no cookies or invalid/expired?
 
-    resolve_cookie_prompt(browser)
     execute_script(browser)
 
 if __name__ == "__main__":
     browser = initialize_browser()
-    from_login(browser)
+    from_home(browser)
