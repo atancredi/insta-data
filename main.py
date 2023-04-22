@@ -52,6 +52,14 @@ def initialize_browser() -> WebDriver:
  
     return browser
  
+def get_mac_browser():
+    driverPath = '/usr/local/Caskroom/chromedriver/89.0.4389.23/chromedriver'
+    binaryPath = '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser'
+    options = webdriver.ChromeOptions()
+    options.binary_location = binaryPath
+    browser = webdriver.Chrome(executable_path=driverPath, chrome_options=options)
+    return browser
+
 def from_login(browser):
     browser.get("https://www.instagram.com/accounts/login/")
 
@@ -103,5 +111,5 @@ def from_home(browser):
     execute_script(browser)
 
 if __name__ == "__main__":
-    browser = initialize_browser()
-    from_home(browser)
+    browser = get_mac_browser()
+    from_login(browser)

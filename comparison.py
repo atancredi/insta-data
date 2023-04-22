@@ -58,8 +58,8 @@ for fl in mostRecentData["followers"]:
 
 # get lost followers
 # check if lost followers are really lost follower or deactivated/removed accounts
-from web import get_browser,is_user_active
-browser = get_browser()
+from web import get_mac_browser,is_user_active
+browser = get_mac_browser()
 lostFollowers = []
 for fl in leastRecentData["followers"]:
     if fl["username"] not in [i["username"] for i in mostRecentData["followers"]]:
