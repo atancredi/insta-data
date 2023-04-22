@@ -23,12 +23,14 @@ def resolve_cookie_prompt(browser):
     WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.ID,"scrollview")))
     browser.find_element(By.XPATH,"//button[contains(.,'Only allow essential')]").click()
 
-def execute_script(browser):
+def execute_script(browser,username):
     with open("scripts/script.js") as f:
         _s = f.read()
         print("script loaded")
         # print(_s)
-    
+
+    # inject username
+    _s = 'const username = "'+username+'";' + _s    
     retval = browser.execute_async_script(_s)
     print("Done executing script")
     print("retval lenght",str(len(retval)))
@@ -74,7 +76,6 @@ def from_login(browser):
     # WebDriverWait(browser,10).until(EC.visibility_of_element_located((By.XPATH,"//button[contains(.,'Save')]")))
 
     save_cookies(browser)
-    execute_script(browser)
 
     return browser
 
@@ -86,10 +87,12 @@ if __name__ == "__main__":
         for c in load_cookies():
             browser.add_cookie(c)
         browser.get("https://www.instagram.com")
-        execute_script(browser)
-    
+
     # if no cookies or invalid/expired?
     else:
         from_login(browser)
+
+
+    execute_script(browser,"asciughino_")
     
     browser.quit()

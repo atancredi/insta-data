@@ -1,4 +1,3 @@
-const username = "asciughino_";
 
 /**
  * Initialized like this so typescript can infer the type
