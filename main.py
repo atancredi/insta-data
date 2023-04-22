@@ -78,17 +78,18 @@ def from_login(browser):
 
     return browser
 
-def from_home(browser):
+if __name__ == "__main__":
+    browser = initialize_browser(PLATFORM)
+
     browser.get("https://www.instagram.com")
     if path.exists("cookies/cookies.pkl"):
         for c in load_cookies():
             browser.add_cookie(c)
         browser.get("https://www.instagram.com")
+        execute_script(browser)
     
     # if no cookies or invalid/expired?
-
-    execute_script(browser)
-
-if __name__ == "__main__":
-    browser = initialize_browser(DEBUG,PLATFORM)
-    from_login(browser)
+    else:
+        from_login(browser)
+    
+    browser.quit()

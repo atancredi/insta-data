@@ -2,26 +2,21 @@
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+
 
 # TODO logging, refactoring
-def initialize_browser(debug,platform) -> WebDriver:
+def initialize_browser(platform) -> WebDriver:
     
     options = None
     # Preparation
     if platform == "MAC_OS":
         options = webdriver.ChromeOptions()
-        options.binary_location = '/usr/local/Caskroom/chromedriver/89.0.4389.23/chromedriver'
-        expath = '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser'
+        service = Service('/usr/local/Caskroom/chromedriver/112.0.5615.49/chromedriver')
+        options.binary_location = '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser'
+        return webdriver.Chrome(service=service, chrome_options=options)
         
     elif platform == "LINUX":
         options = Options()
         options.binary_location = "/usr/lib/firefox/firefox"
-    
-    if not debug:
-        options.add_argument("--headless")
-    
-    if platform == "MAC_OS":
-        return webdriver.Chrome(executable_path=expath, chrome_options=options)
-    elif platform == "LINUX":
         return webdriver.Firefox(options=options)
- 
