@@ -1,12 +1,11 @@
 #TODO spostare dipendenze selenium in web.py
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
+
+from browsers import initialize_browser
 
 from cookies import save_cookies, load_cookies
 
@@ -16,6 +15,7 @@ load_dotenv()
 USERNAME = env.get("USR")
 PASSWORD = env.get("PSWD")
 DEBUG = env.get("DEBUG") or False
+PLATFORM = env.get("PLATFORM")
 
 
 def resolve_cookie_prompt(browser):
@@ -38,27 +38,6 @@ def execute_script(browser):
         
         f.write(str(retval))
 
-# TODO logging 
-def initialize_browser() -> WebDriver:
-    
-    # Preparation
-    options = Options()
-    options.binary_location = "/usr/lib/firefox/firefox"
-    
-    if not DEBUG:
-        options.add_argument("--headless")
-        
-    browser = webdriver.Firefox(options=options)
- 
-    return browser
- 
-def get_mac_browser():
-    driverPath = '/usr/local/Caskroom/chromedriver/89.0.4389.23/chromedriver'
-    binaryPath = '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser'
-    options = webdriver.ChromeOptions()
-    options.binary_location = binaryPath
-    browser = webdriver.Chrome(executable_path=driverPath, chrome_options=options)
-    return browser
 
 def from_login(browser):
     browser.get("https://www.instagram.com/accounts/login/")
@@ -111,5 +90,5 @@ def from_home(browser):
     execute_script(browser)
 
 if __name__ == "__main__":
-    browser = get_mac_browser()
+    browser = initialize_browser(DEBUG,PLATFORM)
     from_login(browser)
