@@ -7,14 +7,25 @@ import uvicorn
 from data import Scan
 from pydantic import BaseModel
 from typing import List
+from fastapi.middleware.cors import CORSMiddleware
 
-# Define app
+
 app = FastAPI(
 	title="title",
 	version=1.1,
 	description="desc",
 	redoc_url=None,
 	openapi_url=None
+)
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.mount("/app", StaticFiles(directory="app",html=True), name="app")
@@ -40,10 +51,6 @@ async def _scan():
 	scan()
 	return {"status": "ok"}
 
-# Get Results List
-
-# Get Result Data
-
 # Get All Results Data
 class ResultResponse(BaseModel):
     results: List[Scan]
@@ -51,10 +58,44 @@ class ResultResponse(BaseModel):
         self.results = object
     __fields_set__ = {"results"}
     
-
 @app.get("/results")
 async def _results():
     return ResultResponse(scan_folder())
+
+@app.get("/compare_last_two")
+async def _compare_last_two():
+	scan = scan_folder()
+	# get most recent
+	most_recent = None
+	for s in scan:
+		if most_recent is None or s.date.is_later_than(most_recent.date):
+			most_recent = s
+
+	# get second most recent
+	second_most_recent = None
+	for s in scan:
+		if second_most_recent is None or (s.date.is_later_than(second_most_recent.date) and not s.date.is_later_than(most_recent.date) and not s.date.is_equal(most_recent.date)):
+			second_most_recent = s
+
+	# compare them
+	# get gained followers
+	gained = []
+	for fl in most_recent.followers:
+		if fl.user not in [i.user for i in second_most_recent.followers]:
+			gained.append(fl)
+
+	# get lost followers
+	# TODO check if lost followers are really lost follower or deactivated/removed accounts
+	# from web import get_mac_browser,is_user_active
+	# browser = get_mac_browser()
+	lost = []
+	for fl in second_most_recent.followers:
+		if fl.user not in [i.user for i in most_recent.followers]:
+			# if not is_user_active(browser,fl.user):
+			# 	fl["status"] = "deactivated"
+			# else: fl["status"] = "active"
+			lost.append(fl)
+	return {"total": most_recent.followers,"gained":gained,"lost":lost,"most_recent":most_recent.date.to_string(),"second_most_recent":second_most_recent.date.to_string()}
 
 ws = uvicorn.Server(
 	config = uvicorn.Config(
@@ -70,4 +111,4 @@ ws = uvicorn.Server(
 )
 
 if __name__ == "__main__":
-	uvicorn.run("main:app",host='0.0.0.0', port=8080, reload=True)
+	uvicorn.run("main:app",host='0.0.0.0', port=8000, reload=True)

@@ -10,6 +10,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from os import environ as env, path
 from dotenv import load_dotenv
 
+# TODO watch log console from js
 def watch_log(browser):
     for log in browser.get_log('browser'): print(log)
 

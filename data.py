@@ -31,7 +31,7 @@ class DateTime(BaseModel):
         self.from_string(string)
 
     def to_string(self):
-        return str(self.year)+"-"+str(self.month)+"-"+str(self.day)+"T"+str(self.hour)+":"+str(self.minute)+":"+str(self.second)+".000Z"
+        return str(self.year)+"-"+str(self.month)+"-"+str(self.day)+"T"+str(self.hour)+":"+str(self.minute)
 
     def is_equal(self,other):
         return self.year == other.year and \

@@ -48,6 +48,16 @@ const app = new Vue({
                     console.log(data);
                 }
             })
+        },
+        scan: () => {
+            $.ajax({
+                url: "http://localhost:8080/scan",
+                type: "GET",
+                dataType: "json",
+                success: (data) => {
+                    console.log(data);
+                }
+            })
         }
     },
     updated: () => {
