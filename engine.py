@@ -4,7 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
-from browsers import initialize_browser
+from browsers import BrowserConnector, Configuration
 from cookies import save_cookies, load_cookies
 from selenium.webdriver.remote.webdriver import WebDriver
 from os import environ as env, path
@@ -69,9 +69,10 @@ def scan():
     load_dotenv()
     USERNAME = env.get("USR")
     PASSWORD = env.get("PSWD")
-    PLATFORM = env.get("PLATFORM")
-    
-    browser = initialize_browser(PLATFORM)
+
+    conf = Configuration(from_env=True)
+    b = BrowserConnector(conf)
+    browser = b.browser
 
     browser.get("https://www.instagram.com")
     if path.exists("cookies/cookies.pkl"):
