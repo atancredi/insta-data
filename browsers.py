@@ -6,7 +6,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-
+from webdriver_manager.chrome import ChromeDriverManager
 
 class Configuration:
 
@@ -48,7 +48,6 @@ class BrowserConnector:
         
         if self.configuration.platform == "CHROME":
             options = webdriver.ChromeOptions()
-            service = Service(self.configuration.service_path)
             dc = DesiredCapabilities.CHROME
             dc['goog:loggingPrefs'] = { 'browser':'ALL' }
 
@@ -56,7 +55,7 @@ class BrowserConnector:
             if not self.configuration.debug:
                 options.add_argument("--headless")
             
-            self.browser = webdriver.Chrome(service=service, options=options, desired_capabilities=dc)
+            self.browser = webdriver.Chrome(ChromeDriverManager().install(), options=options, desired_capabilities=dc)
 
         elif self.configuration.platform == "FIREFOX":
             

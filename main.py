@@ -9,17 +9,19 @@ from pydantic import BaseModel
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 
+# TODO new feature - on lost and gained followers also check if you follow them
+# TODO new feature - from a list of usernames detect and download all stories
 
 app = FastAPI(
-	title="title",
-	version=1.1,
-	description="desc",
+	title="insta-data-api",
+	version=0.0,
+	description="An API that gets things from instagram",
 	redoc_url=None,
 	openapi_url=None
 )
 
+# REMOVE - security issue
 origins = ["*"]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
