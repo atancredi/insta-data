@@ -18,7 +18,7 @@ class Configuration:
     def __init__(self,
                 platform="CHROME",
                 service_path="/usr/local/Caskroom/chromedriver/112.0.5615.49/chromedriver",
-                binary_path="/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
+                binary_path="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
                 debug=False,
                 from_env=False) -> None:
         
@@ -45,23 +45,19 @@ class BrowserConnector:
         self.configuration = configuration
 
         options = None
-        
         if self.configuration.platform == "CHROME":
             options = webdriver.ChromeOptions()
-            dc = DesiredCapabilities.CHROME
-            dc['goog:loggingPrefs'] = { 'browser':'ALL' }
+
+            options.set_capability('goog:loggingPrefs', { 'browser':'ALL' })
 
             options.binary_location = self.configuration.binary_path
             if not self.configuration.debug:
                 options.add_argument("--headless")
-            
-            self.browser = webdriver.Chrome(ChromeDriverManager().install(), options=options, desired_capabilities=dc)
 
-        elif self.configuration.platform == "FIREFOX":
+            service = Service(self.configuration.service_path)
             
-            options = webdriver.FirefoxOptions()
-            options.binary_location = self.configuration.binary_path
-            if not self.configuration.debug:
-                options.add_argument("--headless")
-            
-            self.browser = webdriver.Firefox(options=options)
+            self.browser = webdriver.Chrome(service=service, options=options)
+
+            # if error related to chromedriver
+            # brew update
+            # brew upgrade --cask chromedriver

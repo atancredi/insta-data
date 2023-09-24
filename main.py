@@ -112,5 +112,12 @@ ws = uvicorn.Server(
 	)
 )
 
+from sys import argv
+
 if __name__ == "__main__":
-	uvicorn.run("main:app",host='0.0.0.0', port=8000, reload=True)
+
+	if len(argv) > 1 and argv[1] == "scan":
+		scan()
+	else:
+		uvicorn.run("main:app",host='0.0.0.0', port=8000, reload=False)
+		

@@ -3,12 +3,16 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 from datetime import datetime
 from browsers import BrowserConnector, Configuration
 from cookies import save_cookies, load_cookies
 from selenium.webdriver.remote.webdriver import WebDriver
 from os import environ as env, path
 from dotenv import load_dotenv
+
+# IF selenium.common.exceptions.SessionNotCreatedException: Message: session not created: This version of ChromeDriver only supports Chrome version ...
+# run this command - brew upgrade chromedriver
 
 # TODO watch log console from js
 def watch_log(browser):
@@ -74,6 +78,9 @@ def scan():
     b = BrowserConnector(conf)
     browser = b.browser
 
+    print(browser.get_window_size())
+    print("ws")
+
     browser.get("https://www.instagram.com")
     if path.exists("cookies/cookies.pkl"):
         for c in load_cookies():
@@ -84,6 +91,11 @@ def scan():
     else:
         from_login(browser,USERNAME,PASSWORD)
 
-    execute_script(browser,"asciughino_")
-    
+    try:
+        execute_script(browser,"asciughino_")
+    except TimeoutException:
+        print("script timed out")
+
+    print("Done, press a key to exit")
+    input()
     browser.quit()

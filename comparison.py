@@ -1,6 +1,18 @@
 from os import listdir
 import json
 from datetime import datetime
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.common.by import By
+
+from engine import Configuration, BrowserConnector
+
+def is_user_active(browser:WebDriver,username:str):
+    browser.get("https://www.instagram.com/"+username+"/")
+    if "Sorry, this page isn't available." in browser.find_element(By.TAG_NAME,"body").text:
+        return False
+    return True
+
+
 
 # get least and most recent results
 def get_date_from_iso(iso):
@@ -18,7 +30,7 @@ def get_date_from_iso(iso):
     return datetime(int(year), int(month), int(day), int(hour), int(minute))
 
 
-# Load all results
+# Load all results - TODO THIS HAS NO SENSE, AS THE FILE INCREASES THIS BECOMES MESSY
 resultsData = []
 for file in listdir("results"):
     if file.endswith(".json") and not file.startswith("_"):
@@ -46,9 +58,10 @@ for fl in leastRecentData["followers"]:
     if fl["username"] not in [i["username"] for i in mostRecentData["followers"]]:
         lostFollowers.append(fl)
 
+conf = Configuration(from_env=True)
+b = BrowserConnector(conf)
+browser = b.browser
 if len(lostFollowers) > 0:
-    from web import get_mac_browser,is_user_active
-    browser = get_mac_browser()
     for fl in lostFollowers:
         if not is_user_active(browser,fl["username"]):
             fl["status"] = "deactivated"
@@ -58,6 +71,8 @@ if len(lostFollowers) > 0:
 
 # TODO ask the possibility of unfollow lost followers that are still active
 
+# TODO lost follower status - to enum
+
 print("--------------------------------")
 print(f"gained: {str(len(gainedFollowers))}")
 print(f"lost: {str(len(lostFollowers))}")
@@ -65,8 +80,11 @@ print("--------------------------------")
 print("gained followers")
 print(gainedFollowers)
 print("--------------------------------")
-print("lost followers")
-print(lostFollowers)
+print("lost followers - deactivated")
+print([x for x in lostFollowers if x["status"] == "deactivated"])
+print("--------------------------------")
+print("lost followers - active")
+print([x for x in lostFollowers if x["status"] == "active"])
 
 # check if lost followers are really lost follower or deactivated/removed accounts
 # from web import get_browser,is_user_active
