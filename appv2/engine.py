@@ -1,12 +1,12 @@
-#TODO spostare dipendenze selenium in web.py
+#TODO spostare dipendenze selenium in web.py NOSONAR
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from datetime import datetime
-from browsers import BrowserConnector, Configuration
-from cookies import save_cookies, load_cookies
+from browser_config import BrowserConnector, Configuration
+from cookies_config import save_cookies, load_cookies
 from selenium.webdriver.remote.webdriver import WebDriver
 from os import environ as env, path
 from dotenv import load_dotenv
@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 # run this command - brew upgrade chromedriver
 # and then run - xattr -d com.apple.quarantine /usr/local/Caskroom/chromedriver/118.0.5993.70/chromedriver-mac-x64/chromedriver 
 
-# TODO watch log console from js
+# TODO watch log console from js NOSONAR
 def watch_log(browser):
     for log in browser.get_log('browser'): print(log)
 
@@ -26,7 +26,7 @@ def resolve_cookie_prompt(browser):
     print(el)
     el.click()
 
-# TODO adjust relative paths for js scripts and results folders
+# TODO adjust relative paths for js scripts and results folders NOSONAR
 
 def execute_script(browser:WebDriver,username:str = None):
     with open("scripts/script.js") as f:

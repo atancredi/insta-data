@@ -1,41 +1,12 @@
-import requests
-from json import dumps, dump
+from json import dumps
 from os.path import exists
-from datetime import datetime
 
-from cookies import save_cookies, load_cookies
+from cookies_config import load_cookies
 
 from seleniumrequests import Chrome
 from selenium.webdriver import ChromeOptions
 
-class ScanData:
-    followers: list
-    followings: list
-    dont_follow_me_back: list
-    i_dont_follow_back: list
-    date: str
-
-    def __init__(self, followers: list, followings: list, dont_follow_me_back: list, i_dont_follow_back: list) -> None:
-        self.followers = followers
-        self.followings = followings
-        self.dont_follow_me_back = dont_follow_me_back
-        self.i_dont_follow_back = i_dont_follow_back
-       
-        self.date = datetime.now().isoformat()
-    
-    @property
-    def __dict__(self):
-        return {
-            "date": self.date,
-            "followers": self.followers,
-            "followings": self.followings,
-            "dontFollowMeBack": self.dont_follow_me_back,
-            "iDontFollowBack": self.i_dont_follow_back,
-        }
-
-    def save_to_file(self):
-        now = datetime.now().strftime("%Y_%m_%d-%H_%M")
-        dump(self.__dict__, open("results/result_"+now+".json","w"), indent=4)
+from data_models import ScanData
 
 def get_data():
     USERNAME = "asciughino_"
@@ -58,8 +29,11 @@ def get_data():
     if _userdata.status_code != 200:
         raise ConnectionError(f"({_userdata.status_code}) Could not fetch user data: "+dumps(userdata))
 
+    # the first result should be the matching one
     user_id = userdata["users"][0]["user"]["pk"]
-    dump(userdata, open("asciughino.json", "w"), indent=4)
+
+    # optionally dump the results of the search
+    # dump(userdata, open("asciughino.json", "w"), indent=4)
 
     print(f"Fetching data for user {USERNAME} with id {user_id}")
     

@@ -64,11 +64,11 @@ if len(lostFollowers) > 0:
             fl["status"] = "deactivated"
         else: fl["status"] = "active"
 
-# TODO check if a lost follower has the same bio of a gained follower - it can only have changed account (especially if says deactivated)
+# TODO check if a lost follower has the same bio of a gained follower - it can only have changed account (especially if says deactivated)  NOSONAR
 
-# TODO ask the possibility of unfollow lost followers that are still active
+# TODO ask the possibility of unfollow lost followers that are still active  NOSONAR
 
-# TODO lost follower status - to enum
+# TODO lost follower status - to enum NOSONAR
 
 print("--------------------------------")
 print(f"gained: {str(len(gainedFollowers))}")

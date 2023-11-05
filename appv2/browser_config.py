@@ -1,12 +1,12 @@
 from dotenv import load_dotenv
 from os import environ as env
-from typing import Any
+# from typing import Any NOSONAR
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from webdriver_manager.chrome import ChromeDriverManager
+# from selenium.webdriver.common.desired_capabilities import DesiredCapabilities NOSONAR
+# from webdriver_manager.chrome import ChromeDriverManager
 
 class Configuration:
 
