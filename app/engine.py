@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 
 # IF selenium.common.exceptions.SessionNotCreatedException: Message: session not created: This version of ChromeDriver only supports Chrome version ...
 # run this command - brew upgrade chromedriver
+# and then run - xattr -d com.apple.quarantine /usr/local/Caskroom/chromedriver/118.0.5993.70/chromedriver-mac-x64/chromedriver 
 
 # TODO watch log console from js
 def watch_log(browser):
@@ -21,9 +22,13 @@ def watch_log(browser):
 def resolve_cookie_prompt(browser):
     # Cookie screen
     WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.ID,"scrollview")))
-    browser.find_element(By.XPATH,"//button[contains(.,'Only allow essential')]").click()
+    el = browser.find_element(By.XPATH,"//button[contains(.,'Decline optional')]")
+    print(el)
+    el.click()
 
-def execute_script(browser:WebDriver,username:str):
+# TODO adjust relative paths for js scripts and results folders
+
+def execute_script(browser:WebDriver,username:str = None):
     with open("scripts/script.js") as f:
         _s = f.read()
         print("script loaded")
@@ -92,10 +97,8 @@ def scan():
         from_login(browser,USERNAME,PASSWORD)
 
     try:
-        execute_script(browser,"asciughino_")
+        execute_script(browser, "asciughino_")
     except TimeoutException:
         print("script timed out")
 
-    print("Done, press a key to exit")
-    input()
     browser.quit()

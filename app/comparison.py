@@ -12,8 +12,6 @@ def is_user_active(browser:WebDriver,username:str):
         return False
     return True
 
-
-
 # get least and most recent results
 def get_date_from_iso(iso):
     if type(iso).__name__ == "datetime" or "T" not in iso:
@@ -28,7 +26,6 @@ def get_date_from_iso(iso):
     hour = __[0]
     minute = __[1]
     return datetime(int(year), int(month), int(day), int(hour), int(minute))
-
 
 # Load all results - TODO THIS HAS NO SENSE, AS THE FILE INCREASES THIS BECOMES MESSY
 resultsData = []

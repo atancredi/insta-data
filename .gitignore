@@ -7,3 +7,4 @@ cookies
 .fuse*
 __pycache__
 instagrapi-rest
+dump
