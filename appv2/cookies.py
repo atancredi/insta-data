@@ -1,7 +1,7 @@
 import pickle
 from json import dumps
 
-# TODO logging
+# TODO logging NOSONAR
 def save_cookies(browser):
     pickle.dump(browser.get_cookies(), open("cookies/cookies.pkl", "wb"))
     print("cookies saved")
