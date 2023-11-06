@@ -1,7 +1,8 @@
 .env
 geckodriver.log
-api-approach
 results
+results_comparisons
+old_results
 cookies
 .python-version
 .fuse*
