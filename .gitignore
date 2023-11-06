@@ -8,3 +8,5 @@ cookies
 __pycache__
 instagrapi-rest
 dump
+old_results
+results_comparisons
