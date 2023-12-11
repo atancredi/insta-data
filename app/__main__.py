@@ -15,7 +15,7 @@ if __name__ == "__main__":
         engine.load_from_files()
         scan_comparison_data = engine.compare_scans()
         scan_comparison_data.save_to_file()
-        log.info("Finished Comparison")
+        log.info("Finished Comparison", extra=scan_comparison_data.results)
 
     except Exception as ex:
         log.error(f"{ex.__class__.__name__}: {ex}")

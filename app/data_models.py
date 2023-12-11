@@ -107,6 +107,17 @@ class ScanComparisonData:
             "gained_followers": [x.__dict__ for x in self.gained_followers],
             "lost_followers": [x.__dict__ for x in self.lost_followers],
         }
+    
+    @property
+    def results(self):
+        return {
+            "time_object": {
+                "reference_scan": self.time_object.reference_scan.isoformat(),
+                "current_scan": self.time_object.current_scan.isoformat()
+            },
+            "gained_followers": len(self.gained_followers),
+            "lost_followers": len(self.lost_followers),
+        }
 
     def save_to_file(self):
         d = datetime.now().strftime("%Y_%m_%d-%H_%M")
