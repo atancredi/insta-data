@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>insta-scan</title>
+
+    <style>
+        html {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: inherit
+        }
+
+        .left-margin {
+            margin-left: 10px;
+        }
+
+        td, th{
+            padding: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+    
+    <div id="app">
+
+        <div id="section-results" class="left-margin">
+
+            <div id="section-header">
+                <h1>insta-scan</h1>
+                <h3>results of last two scans - (<span id="date-current"></span>) vs (<span id="date-previous"></span>)</h3>
+            </div>
+            <hr />
+            <div id="section-body">
+                <h1>Gained Followers (<span id="gaind-followers-n"></span>)</h1>
+                <table id="gained-followers">
+                    <tr>
+                        <th>
+
+                        </th>
+                        <th>
+                            Username
+                        </th>
+                        <th>
+                            Full Name
+                        </th>
+                    </tr>
+                </table>
+                
+                <h1>Lost Followers (<span id="lost-followers-n"></span>)</h1>
+                <table id="lost-followers">
+                    <tr>
+                        <th>
+
+                        </th>
+                        <th>
+                            Username
+                        </th>
+                        <th>
+                            Full Name
+                        </th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="jquery.js"></script>
+    <script>
+        
+        // Define where to put data
+        let previousDate = $("#date-previous");
+        let currentDate = $("#date-current");
+        let gainedFollowers = $("#gained-followers");
+        let lostFollowers = $("#lost-followers");
+        let gainedFollowersN = $("#gaind-followers-n");
+        let lostFollowersN = $("#lost-followers-n");
+        
+        // Make API call
+        $.get("/lastscan", function (data) {
+            
+            // Set dates
+            previousDate.text(new Date(data.time_object.reference_scan).toLocaleString());
+            currentDate.text(new Date(data.time_object.current_scan).toLocaleString())
+
+            // Fill gained followers
+            gainedFollowersN.text(data.gained_followers.length);
+            data.gained_followers.forEach(follower => {
+                $("<tr><td></td><td>"+follower.username+"</td><td>"+follower.full_name+"</td></tr>").appendTo(gainedFollowers);
+            });
+
+            // Fill lost followers
+            lostFollowersN.text(data.lost_followers.length);
+            data.lost_followers.forEach(follower => {
+                $("<tr><td></td><td>"+follower.username+"</td><td>"+follower.full_name+"</td></tr>").appendTo(lostFollowers);
+            });
+
+        });
+
+
+    </script>
+    
+</body>
+
+</html>
