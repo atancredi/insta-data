@@ -5,19 +5,20 @@ from logging import Logger
 from cookies_config import load_cookies
 
 from seleniumrequests import Chrome
-from selenium.webdriver import ChromeOptions
+from selenium.webdriver import ChromeOptions, ChromeService
 
 from data_models import ScanData, Follower
 
-def scan(username: str, logger: Logger):
-
+def scan(username: str, service_path: str, logger: Logger, headless: True) -> ScanData:
     options = ChromeOptions()
 
     options.set_capability('goog:loggingPrefs', { 'browser':'ALL' })
 
-    options.add_argument("--headless")
-
-    webdriver = Chrome(options=options)
+    if headless:
+        options.add_argument("--headless")
+    
+    service = ChromeService(executable_path=service_path)
+    webdriver = Chrome(options=options,service=service)
     logger.debug("Instantiated Chrome browser")
     webdriver.get("https://www.instagram.com/")
     if exists("cookies/cookies.pkl"):

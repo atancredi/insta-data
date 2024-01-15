@@ -9,3 +9,4 @@ cookies
 __pycache__
 instagrapi-rest
 dump
+.DS_Store
