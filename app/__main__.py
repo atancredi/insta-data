@@ -1,5 +1,5 @@
 from my_stacklogging import new_logger
-from scan_engine import scan
+from scan_engine import scan, get_user_id, get_webdriver
 from scan_comparison import ScanComparison
 
 from dotenv import load_dotenv
@@ -14,8 +14,16 @@ if __name__ == "__main__":
         service_path = env.get("SERVICE_PATH", None)
         headless = env.get("HEADLESS", "True") == "True"
         username = env.get("USERNAME", None)
+        user_id = env.get("USER_ID", None)
 
-        scan_data = scan(username,service_path, log, headless=headless)
+        # get webdriver
+        webdriver = get_webdriver(service_path, log, headless=headless)
+
+        # if user_id is not specified find it from username
+        if not user_id:
+            user_id = get_user_id(username, webdriver, log)
+
+        scan_data = scan(user_id, webdriver, log)
         scan_data.save_to_file()
         log.info("Finished Scan")
 

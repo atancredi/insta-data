@@ -10,3 +10,4 @@ __pycache__
 instagrapi-rest
 dump
 .DS_Store
+dumped_requests
