@@ -11,3 +11,5 @@ instagrapi-rest
 dump
 .DS_Store
 dumped_requests
+local_app/
+db/

@@ -2,7 +2,7 @@ from datetime import datetime
 from os import listdir
 from json import loads
 
-from data_models import ScanComparisonData, ScanData, TimeObject
+from .data_models import ScanComparisonData, ScanData, TimeObject
 
 class ScanComparison:
 
